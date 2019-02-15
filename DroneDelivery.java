@@ -7,10 +7,13 @@
  * 7-8 neutral
  * 9-10 promoter
  * (10 - score) is number of hours to earn that score
- * Testing a changed stage
  */
 public class DroneDelivery {
     public static void main (String [] args) {
-        System.out.println("Hello World");
+        Drone d1 = new Drone(1);
+        d1.printCoords();
+        d1.moveEast();
+        d1.moveSouth();
+        d1.printCoords();
     }
 }
