@@ -5,7 +5,7 @@ public class Drone {
     private int x;
     private int y;
 
-    //constructoe sets position to 0,0 by default
+    //constructor sets position to 0,0 by default
     public Drone(int speed) {
         s = speed;
         x = 0;
@@ -34,22 +34,17 @@ public class Drone {
         return coords;
     }
 
-    //Movement methods
-    //Asumes that north corresponds to positive Y axis
-    public void moveNorth() {
-        this.y++;
+    public long calculateTravelTime(int destX, int destY) {
+        double deltaX = Math.abs(destX-this.x);
+        double deltaY = Math.abs(destY-this.y);
+        return (long)Math.ceil(s*(Math.sqrt(deltaX*deltaX+deltaY*deltaY)));
     }
 
-    public void moveSouth() {
-        this.y--;
-    }
-
-    public void moveEast() {
-        this.x++;
-    }
-
-    public void moveWest() {
-        this.x--;
+    public long travel(int destX, int destY) {
+        long tTime = this.calculateTravelTime(destX, destY);
+        this.x = destX;
+        this.y = destY;
+        return tTime;
     }
 
     public void printCoords() {
