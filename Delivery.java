@@ -70,6 +70,10 @@ public class Delivery implements Comparable<Delivery> {
         else fulfilled = true;
     }
 
+    public boolean getFulfilled() {
+        return fulfilled;
+    }
+
     public int compareTo(Delivery d) {
             return (int)(this.getDistanceFromOrigin() - d.getDistanceFromOrigin());
     }
