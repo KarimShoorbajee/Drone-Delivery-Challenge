@@ -71,6 +71,6 @@ public class Delivery implements Comparable<Delivery> {
     }
 
     public int compareTo(Delivery d) {
-            return this.getDistanceFromOrigin() - d.getDistanceFromOrigin();
+            return (int)(this.getDistanceFromOrigin() - d.getDistanceFromOrigin());
     }
 }
