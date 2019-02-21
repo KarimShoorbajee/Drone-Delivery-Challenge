@@ -72,14 +72,16 @@ public class DroneDelivery {
             }
             else time=deliveriesInOrder.getFirst().getTimestamp() - startTime;
 
-            Delivery deliv = pQueue.poll();
-            String departTime = timeToString(time);
-            time += d1.travel(deliv.getX(),deliv.getY());
-            deliv.setScore(time, startTime);
-            time += d1.travel(0,0);
-            System.out.println(deliv.getOrder() + " " + departTime);
-            if (deliv.getScore()>8) promoters++;
-            else if (deliv.getScore()<7) detractors++;
+            while (pQueue.size() >= 1) {
+                Delivery deliv = pQueue.poll();
+                String departTime = timeToString(time);
+                time += d1.travel(deliv.getX(),deliv.getY());
+                deliv.setScore(time, startTime);
+                time += d1.travel(0,0);
+                System.out.println(deliv.getOrder() + " " + departTime);
+                if (deliv.getScore()>8) promoters++;
+                else if (deliv.getScore()<7) detractors++;
+            }
             
         }
         int nps = calculateNPS(numDeliveriesToFulfill);
