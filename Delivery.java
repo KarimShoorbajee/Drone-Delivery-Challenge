@@ -1,4 +1,4 @@
-public class Delivery {
+public class Delivery implements Comparable<Delivery> {
     
     private String orderID;
     private long timestamp;
@@ -35,28 +35,20 @@ public class Delivery {
 
     }
 
-    public String getOrder() {
-        return this.orderID;
-    }
+    public String getOrder() {return this.orderID;}
 
-    public long getTimestamp() {
-       return this.timestamp;
-    }
+    public long getTimestamp() {return this.timestamp;}
 
-    public String getOrderID() {
-        return this.orderID;
-    }
+    public String getOrderID() {return this.orderID;}
 
-    public int getX() {
-        return this.x;
-    }
+    public int getX() {return this.x;}
 
-    public int getY() {
-        return this.y;
-    }
+    public int getY() {return this.y;}
 
-    public int getScore() {
-        return score;
+    public int getScore() {return score;}
+
+    public long getDistanceFromOrigin() {
+        return (long)Math.ceil(Math.sqrt(x*x+y*y));
     }
 
     public void setScore(long deliveryTime, long startTime) {
@@ -76,5 +68,9 @@ public class Delivery {
             System.out.println("Order " + this.orderID + " is already fulfilled");
         }
         else fulfilled = true;
+    }
+
+    public int compareTo(Delivery d) {
+            return this.getDistanceFromOrigin() - d.getDistanceFromOrigin();
     }
 }
