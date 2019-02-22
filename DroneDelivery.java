@@ -29,7 +29,9 @@ public class DroneDelivery {
     public static float detractors = 0;
 
     public static void main (String [] args) throws IOException {
-
+        PrintStream out = new PrintStream(new FileOutputStream("output.txt"));
+        System.setOut(out);
+        
         if (args.length < 1) {
             System.out.println("Invalid input.");
             System.exit(-1);
@@ -73,9 +75,12 @@ public class DroneDelivery {
             }
             else time=deliveriesInOrder.getFirst().getTimestamp() - startTime;
 
-            Delivery temp = null;
-            while (pQueue.size() >= 1) {
-                if ()
+    
+            while (pQueue.size() >= 1 && droneUp) {
+                if (estimateTravelTime(d1, pQueue.peek()) + time > droneUpTime) {
+                    droneUp = false;
+                    break;
+                }
                 if (pQueue.peek().getHypotheticalScore(d1, startTime) < 7)
                     certifiedTardy.add(pQueue.poll());
                 Delivery deliv = pQueue.poll();
@@ -85,13 +90,23 @@ public class DroneDelivery {
                 if (deliv.getScore()>8) promoters++;
                 else if (deliv.getScore()<7) detractors++;
             }
-            while (certifiedTardy.size() >= 1) {
+
+            while (certifiedTardy.size() >= 1  && droneUp) {
+                if (estimateTravelTime(d1, pQueue.peek()) + time > droneUpTime) {
+                    droneUp = false;
+                    break;
+                }
                 Delivery deliv = certifiedTardy.pop();
                 String departTime = timeToString(time);
                 time = deliv.fulfill(d1,time,startTime);
                 System.out.println(deliv.getOrder() + " " + departTime);
                 if (deliv.getScore()>8) promoters++;
                 else if (deliv.getScore()<7) detractors++;
+            }
+            if (!droneUp) {
+                int ordersLeft = pQueue.size() + deliveriesInOrder.size();
+                for (int i = 0; i < ordersLeft; i++)
+                    detractors++;
             }
         }
         int nps = calculateNPS(numDeliveriesToFulfill);
@@ -114,10 +129,10 @@ public class DroneDelivery {
     public static int calculateNPS(int numDeliveriesToFulfill) {
         float detractorRat = detractors/numDeliveriesToFulfill;
         float promotersRat = promoters/numDeliveriesToFulfill;
-        System.out.println(promoters);
-        System.out.println(detractors);
-        System.out.println(promotersRat);
-        System.out.println(detractorRat);
         return Math.round(100*(promotersRat-detractorRat));
+    }
+
+    public static long estimateTravelTime(Drone x,Delivery d) {
+        return 2*(x.calculateTravelTime(d.getX(), d.getY()));
     }
 }
