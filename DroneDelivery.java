@@ -84,17 +84,17 @@ public class DroneDelivery {
 
             long preBatchTotalTime = startTime;
             LinkedList<Delivery> longestBeforeTardy = new LinkedList<Delivery>();
+
             int i = 0;
             while (i < preBatch.size() - longestBeforeTardy.size()) {
-                preBatchTotalTime += 2*preBatch.get(i).getDistanceFromOrigin();
-                System.out.println(i);
+                preBatchTotalTime += 2*estimateTravelTime(d1,preBatch.get(i));
                 if (preBatchTotalTime - preBatch.get(i).getTimestamp() > 4*60*60) {
                     preBatchTotalTime = startTime;
                     int j = 0;
                     int indexMaxDistance = 0;
-                    System.out.println("Hello");
+                    System.out.println(i + ":  " + preBatchTotalTime);
                     while (j < i) {
-                        if (preBatch.get(j).getDistanceFromOrigin() > preBatch.get(indexMaxDistance).getDistanceFromOrigin())
+                        if (estimateTravelTime(d1,preBatch.get(j)) > estimateTravelTime(d1,preBatch.get(indexMaxDistance)))
                             indexMaxDistance = j;
                         j++;
                     }
@@ -104,6 +104,7 @@ public class DroneDelivery {
                 }
                 i++;
             }
+
 
             while (pQueue.size() > 0 && greedyFlag) {
                 Delivery deliv = pQueue.poll();
@@ -144,5 +145,9 @@ public class DroneDelivery {
         System.out.println(promotersRat);
         System.out.println(detractorRat);
         return Math.round(100*(promotersRat-detractorRat));
+    }
+
+    public static long estimateTravelTime(Drone x,Delivery d) {
+        return x.calculateTravelTime(d.getX(), d.getY());
     }
 }
