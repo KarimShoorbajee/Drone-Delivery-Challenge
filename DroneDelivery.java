@@ -60,6 +60,7 @@ public class DroneDelivery {
         long time = 0;
         Drone d1 = new Drone(60);
         PriorityQueue<Delivery> pQueue = new PriorityQueue<Delivery>();
+        LinkedList<Delivery> certifiedTardy = new LinkedList<Delivery>();
         
         while (time < droneUpTime && deliveriesInOrder.size() >= 1) {
             if (startTime + time >= deliveriesInOrder.getFirst().getTimestamp() ) {
@@ -74,7 +75,18 @@ public class DroneDelivery {
 
             Delivery temp = null;
             while (pQueue.size() >= 1) {
+                if (pQueue.peek().getHypotheticalScore(d1, startTime) < 7)
+                    certifiedTardy.add(pQueue.poll());
                 Delivery deliv = pQueue.poll();
+                String departTime = timeToString(time);
+                time = deliv.fulfill(d1,time,startTime);
+                System.out.println(deliv.getOrder() + " " + departTime);
+                if (deliv.getScore()>8) promoters++;
+                else if (deliv.getScore()<7) detractors++;
+            }
+
+            while (certifiedTardy.size() >= 1) {
+                Delivery deliv = certifiedTardy.pop();
                 String departTime = timeToString(time);
                 time = deliv.fulfill(d1,time,startTime);
                 System.out.println(deliv.getOrder() + " " + departTime);
