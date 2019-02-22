@@ -53,7 +53,6 @@ public class Delivery implements Comparable<Delivery> {
 
     public void setScore(long deliveryTime, long startTime) {
         long deliverdIn = startTime +deliveryTime - timestamp;
-        System.out.println(deliverdIn);
         this.score = (int)(10 - deliverdIn/60/60);
     }
 
