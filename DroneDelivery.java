@@ -109,7 +109,10 @@ public class DroneDelivery {
             while (pQueue.size() > 0 && greedyFlag) {
                 Delivery deliv = pQueue.poll();
                 String departTime = timeToString(time);
-                time = deliv.fulfill(d1,time,startTime);
+                time += d1.travel(deliv.getX(),deliv.getY());
+                deliv.setScore(time, startTime);
+                deliv.fulfil();
+                time += d1.travel(0,0);
                 System.out.println(deliv.getOrder() + " " + departTime);
                 if (deliv.getScore()>8) promoters++;
                 else if (deliv.getScore()<7) detractors++;

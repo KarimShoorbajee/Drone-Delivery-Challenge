@@ -63,17 +63,11 @@ public class Delivery implements Comparable<Delivery> {
         return (int)(10 - deliveredIn/60/60);
     }
 
-    public long fulfill(Drone d, long time, long startTime) {
+    public void fulfil() {
         if (this.fulfilled == true) {
             System.out.println("Order " + this.orderID + " is already fulfilled");
         }
-        else {
-            time += d.travel(this.getX(),this.getY());
-            this.setScore(time, startTime);
-            time += d.travel(0,0);
-            this.fulfilled = true;
-        }
-        return time;
+        else fulfilled = true;
     }
 
     public boolean getFulfilled() {
